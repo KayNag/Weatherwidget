@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="br.com.android.weatherforecast"
+    package="kay.maluuba.view"
     android:versionCode="11"
     android:versionName="Lua" >
 
@@ -19,7 +19,7 @@
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" >
     </uses-permission>
     
-    <uses-sdk android:minSdkVersion="10"  android:targetSdkVersion="15"/>
+    <uses-sdk android:minSdkVersion="11"  android:targetSdkVersion="15"/>
 
     <application
         android:description="@string/app_name"
@@ -29,7 +29,7 @@
         android:label="@string/app_name" >
         <activity
             android:windowSoftInputMode="stateHidden"
-            android:name=".WeatherForecast"
+            android:name="kay.maluuba.view.Detailview"
             android:finishOnTaskLaunch="true"
             android:label="@string/app_name"
             android:screenOrientation="portrait" >
@@ -41,7 +41,7 @@
         </activity>
 
         <receiver
-            android:name=".widget.Widget"
+            android:name="kay.maluuba.view.Widget"
             android:label="@string/widget_name" >
             <intent-filter>
                 <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
@@ -51,6 +51,6 @@
                 android:name="android.appwidget.provider"
                 android:resource="@xml/widget" />
         </receiver>
-        <service android:name=".widget.Widget$UpdateService" />
+        <service android:name="Widget$UpdateService" />
     </application>
 </manifest>

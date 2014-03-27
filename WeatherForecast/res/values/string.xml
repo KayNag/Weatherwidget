@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    
+    <string name="app_name">Maluuba</string>
+<string name="widget_name">Maluuba</string>
+<string name="city">userid</string>
+<string name="condition">condition</string>
+<string name="lastUpdate">lastupdate</string>
+<string name="ok">OK</string>
+<string name="nextDays">NextDays</string>
+<string name="refresh">Refresh</string>
+<string name="location">Location</string>
+<string name="exit">Exit</string>
+<string name="enterCity">Enter a value</string>
+<string name="processMsg">Processing</string>
+<string name="locationErrorMsg">Locationcannotbefetched</string>
+<string name="internetErrorMsg">Internet Conneciton problem</string>
+<string name="forecastNotFound">Problem with forecast</string>
+<string name="wind">Wind</string>
+<string name="humidity">Humidity</string>
+<string name="rain">Rain</string>
+<string name="icon">Icon</string>
+<string name="initialTemp">0 ºF</string>
+<string name="unknown">unknown</string>
+</resources>
