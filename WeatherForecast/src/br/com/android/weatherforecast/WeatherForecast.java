@@ -50,11 +50,7 @@ import br.com.android.weatherforecast.weather.WeatherUtils;
 import br.com.android.weatherforecast.weather.WundergroundDecoder;
 import br.com.android.weatherforecast.widget.Widget.UpdateService;
 
-/**
- * Classe para Gerenciamento da Aplicação de Previsão do Tempo
- * @author Felipe Cobello
- *
- */
+
 public class WeatherForecast extends Activity
 {
 	public final static String DEBUG_TAG = "WEATHER_FORECAST";
@@ -146,7 +142,7 @@ public class WeatherForecast extends Activity
 		{
 			Log.e(WeatherForecast.DEBUG_TAG, e.getMessage(), e);
 			WeatherUtils.showMessage(WeatherForecast.this, getString(R.string.locationErrorMsg));
-			resetWeatherInfoViews();
+			//resetWeatherInfoViews();
 		}
 	}
 
@@ -166,28 +162,28 @@ public class WeatherForecast extends Activity
 	 * Atualiza Previsão Atual
 	 * @param aWCIS Informaçoes do Tempo
 	 */
-	private void updateWeatherInfoView(WeatherCurrentCondition aWCIS)
-	{
-		((ImageView) findViewById(R.id.imgWeather)).setImageDrawable(getResources().getDrawable(WeatherIcons.getImageDrawable(aWCIS.getIconURL())));
-		((TextView) findViewById(R.id.weather_today_temp)).setText(aWCIS.getTempCelcius() + "°C");
-		((TextView) findViewById(R.id.weather_today_city)).setText(txtCidade.getText().toString());
-		((TextView) findViewById(R.id.weather_today_condition)).setText(aWCIS.getCondition() + "\n" + getString(R.string.wind) + " " + aWCIS.getWindCondition() + "\n" + getString(R.string.humidity) + ": " + aWCIS.getHumidity());
-		((TextView) findViewById(R.id.lblProximosDias)).setText(getString(R.string.nextDays));
-	}
+//	private void updateWeatherInfoView(WeatherCurrentCondition aWCIS)
+//	{
+//		((ImageView) findViewById(R.id.imgWeather)).setImageDrawable(getResources().getDrawable(WeatherIcons.getImageDrawable(aWCIS.getIconURL())));
+//		((TextView) findViewById(R.id.weather_today_temp)).setText(aWCIS.getTempCelcius() + "°C");
+//		((TextView) findViewById(R.id.weather_today_city)).setText(txtCidade.getText().toString());
+//		((TextView) findViewById(R.id.weather_today_condition)).setText(aWCIS.getCondition() + "\n" + getString(R.string.wind) + " " + aWCIS.getWindCondition() + "\n" + getString(R.string.humidity) + ": " + aWCIS.getHumidity());
+//		((TextView) findViewById(R.id.lblProximosDias)).setText(getString(R.string.nextDays));
+//	}
 
 	/**
 	 * Reinicia Informacoes
 	 */
-	private void resetWeatherInfoViews()
-	{
-		((ImageView)findViewById(R.id.imgWeather)).setImageDrawable(getResources().getDrawable(R.drawable.undefined));
-		((TextView) findViewById(R.id.weather_today_city)).setText(getString(R.string.city));
-		((TextView) findViewById(R.id.weather_today_temp)).setText("0 °C");
-		((TextView) findViewById(R.id.weather_today_condition)).setText(getString(R.string.condition));
-		((WeatherLine) findViewById(R.id.weather_1)).reset();
-		((WeatherLine) findViewById(R.id.weather_2)).reset();
-		((WeatherLine) findViewById(R.id.weather_3)).reset();
-	}
+//	private void resetWeatherInfoViews()
+//	{
+//		((ImageView)findViewById(R.id.imgWeather)).setImageDrawable(getResources().getDrawable(R.drawable.undefined));
+//		((TextView) findViewById(R.id.weather_today_city)).setText(getString(R.string.city));
+//		((TextView) findViewById(R.id.weather_today_temp)).setText("0 °C");
+//		((TextView) findViewById(R.id.weather_today_condition)).setText(getString(R.string.condition));
+//		((WeatherLine) findViewById(R.id.weather_1)).reset();
+//		((WeatherLine) findViewById(R.id.weather_2)).reset();
+//		((WeatherLine) findViewById(R.id.weather_3)).reset();
+//	}
 
 	/**
 	 * Realiza a busca da previsão do tempo, quando tempo da ultima busca for inferior a 1,5hrs utiliza cache, senão
@@ -242,11 +238,11 @@ public class WeatherForecast extends Activity
 	{
 		if (ws != null)
 		{
-			updateWeatherInfoView(ws.getWeatherCurrentCondition());
-			updateWeatherInfoView(R.id.weather_1, ws.getWeatherForecastConditions().get(1));
-			updateWeatherInfoView(R.id.weather_2, ws.getWeatherForecastConditions().get(2));
-			updateWeatherInfoView(R.id.weather_3, ws.getWeatherForecastConditions().get(3));
-			((TextView)findViewById(R.id.lblAtualizacao)).setText(getString(R.string.lastUpdate) + ": " + new SimpleDateFormat("dd/MM/yyyy HH:mm").format(weatherPref.getLastUpdate()));
+//			updateWeatherInfoView(ws.getWeatherCurrentCondition());
+//			updateWeatherInfoView(R.id.weather_1, ws.getWeatherForecastConditions().get(1));
+//			updateWeatherInfoView(R.id.weather_2, ws.getWeatherForecastConditions().get(2));
+//			updateWeatherInfoView(R.id.weather_3, ws.getWeatherForecastConditions().get(3));
+//			((TextView)findViewById(R.id.lblAtualizacao)).setText(getString(R.string.lastUpdate) + ": " + new SimpleDateFormat("dd/MM/yyyy HH:mm").format(weatherPref.getLastUpdate()));
 		}
 		else
 			WeatherUtils.showMessage(WeatherForecast.this, getString(R.string.forecastNotFound));

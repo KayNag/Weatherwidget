@@ -32,42 +32,50 @@ public class WundergroundDecoder{
 		StringBuilder response = new StringBuilder();
 		URLConnection connection;
 		BufferedReader reader;
-		String keyC = keys[(int) (1 + (4*Math.random())) - 1];
-		String keyF = keys[(int) (1 + (4*Math.random())) - 1];
+	String keyC = keys[(int) (1 + (4*Math.random())) - 1];
+	String keyF = keys[(int) (1 + (4*Math.random())) - 1];
 
 		if (cityParam.equals(""))
 			return weatherSet;
-		queryString = "http://api.wunderground.com/api/" + keyF + "/forecast/lang:BR/q/Brazil/" + cityParam + ".json";
-		connection = new URL(queryString.replace(" ", "%20")).openConnection();
-		connection.setConnectTimeout(1000 * 5);
-		reader = new BufferedReader(new InputStreamReader(connection.getInputStream(), Charset.forName("UTF-8")));
-		while ((line = reader.readLine()) != null)
-			response.append(line);
-		decodeJSONForecast(response.toString());
-		reader.close();
-		connection = null;
-		reader = null;
-		response = new StringBuilder();
-		queryString = "http://api.wunderground.com/api/" + keyC + "/conditions/lang:BR/q/Brazil/" + cityParam + ".json";
-		connection = new URL(queryString.replace(" ", "%20")).openConnection();
-		connection.setConnectTimeout(1000 * 5);
-		reader = new BufferedReader(new InputStreamReader(connection.getInputStream(), Charset.forName("UTF-8")));
-		while ((line = reader.readLine()) != null)
-			response.append(line);
-		decodeJSONConditions(response.toString());
-		weatherSet.setWeatherForecastInformation(new WeatherForecastInformation());
-		weatherSet.getWeatherForecastInformation().setCity(cityParam);
-		weatherSet.getWeatherForecastInformation().setTime(System.currentTimeMillis());
-		return weatherSet;
+//		 queryString = "http://api.wunderground.com/api/" + keyF + "/forecast/lang:BR/q/Brazil/" + cityParam + ".json";
+//         connection = new URL(queryString.replace(" ", "%20")).openConnection();
+//         connection.setConnectTimeout(1000 * 5);
+//         reader = new BufferedReader(new InputStreamReader(connection.getInputStream(), Charset.forName("UTF-8")));
+//         while ((line = reader.readLine()) != null)
+//                 response.append(line);
+//         decodeJSONForecast(response.toString());
+       //  reader.close();
+         connection = null;
+         reader = null;
+         response = new StringBuilder();
+         queryString = "http://ec2-54-198-118-231.compute-1.amazonaws.com:8080/wunderground/getWeather?input=%7B%22gps%22:%7B%22latitude%22:39.923614,%22longitude%22:116.396086,%22radius%22:0.0%7D%7D&oauthToken=ANDROIDINTERVIEW&requestInfo=%7B%22userId%22:%22test-1234%22%7D";
+         connection = new URL(queryString.replace(" ", "%20")).openConnection();
+         connection.setConnectTimeout(1000 * 5);
+         reader = new BufferedReader(new InputStreamReader(connection.getInputStream(), Charset.forName("UTF-8")));
+         while ((line = reader.readLine()) != null)
+                 response.append(line);
+         decodeJSONForecast(response.toString());
+         weatherSet.setWeatherForecastInformation(new WeatherForecastInformation());
+         weatherSet.getWeatherForecastInformation().setCity(cityParam);
+         weatherSet.getWeatherForecastInformation().setTime(System.currentTimeMillis());
+         return weatherSet;
 	}
 	
 	private void decodeJSONConditions(String response) throws JSONException{
-		JSONObject json = new JSONObject(response.toString());
-		WeatherCurrentCondition current = new WeatherCurrentCondition();
-		JSONObject condition = (JSONObject) json.get("current_observation");
 		
-		current.setTempCelcius(condition.getInt("temp_c"));
-		current.setCondition(condition.getString("weather").equals("") ? context.getString(R.string.unknown):condition.getString("weather"));
+		JSONObject json = new JSONObject(response.toString());
+		JSONObject forecast = (JSONObject) json.get("weather");
+		JSONObject simpleforecast = (JSONObject) forecast.get("currentCondition");
+		JSONArray forecastDay = (JSONArray) simpleforecast.get("hourlyForecast");
+		JSONObject day;
+		
+		
+		WeatherCurrentCondition current = new WeatherCurrentCondition();
+		JSONArray arr = (JSONArray)json.get("weatherData");
+		JSONObject condition = (JSONObject) json.get("temperatureData");
+		
+		current.setTempCelcius(condition.getInt("tempFahrenheit"));
+		current.setCondition(condition.getString("feelsLikeFahrenheit").equals("") ? context.getString(R.string.unknown):condition.getString("feelsLikeFahrenheit"));
 		current.setWindCondition(condition.getString("wind_dir") + " a " + condition.getString("wind_kph") + " km/h");
 		current.setIconURL(condition.getString("icon"));
 		current.setHumidity(condition.getString("relative_humidity"));
@@ -76,9 +84,10 @@ public class WundergroundDecoder{
 	
 	private void decodeJSONForecast(String response) throws JSONException{
 		JSONObject json = new JSONObject(response.toString());
-		JSONObject forecast = (JSONObject) json.get("forecast");
-		JSONObject simpleforecast = (JSONObject) forecast.get("simpleforecast");
-		JSONArray forecastDay = (JSONArray) simpleforecast.get("forecastday");
+		JSONObject forecast = (JSONObject) json.get("platformResponse");
+		JSONObject simpleforecast = (JSONObject) forecast.get("weather");
+		JSONObject currentcondi = (JSONObject) simpleforecast.get("currentCondition");
+		JSONArray forecastDay = (JSONArray) currentcondi.get("hourlyForecast");
 		JSONObject day;
 		
 		for(int i = 0; i < forecastDay.length(); i++){
@@ -86,12 +95,12 @@ public class WundergroundDecoder{
 			WeatherForecastCondition dayForecast = new WeatherForecastCondition();
 			day = (JSONObject) forecastDay.get(i);
 			
-			dayForecast.setDayofWeek(day.getJSONObject("date").getString("weekday"));
-			dayForecast.setCondition(day.getString("conditions"));
-			dayForecast.setIconURL(day.getString("icon"));
-			dayForecast.setTempMax(day.getJSONObject("high").getInt("celsius"));
-			dayForecast.setTempMin(day.getJSONObject("low").getInt("celsius"));
-			dayForecast.setPrecipitation(day.getString("pop") + "%");
+//			dayForecast.setDayofWeek(day.getJSONObject("date").getString("weekday"));
+			dayForecast.setCondition(day.getString("condition"));
+			dayForecast.setIconURL(day.getString("iconURLs"));
+		//	dayForecast.setTempMax(day.getJSONObject("high").getInt("celsius"));
+			//dayForecast.setTempMin(day.getJSONObject("low").getInt("celsius"));
+			dayForecast.setPrecipitation(day.getString("humidity") + "%");
 			weatherSet.getWeatherForecastConditions().add(dayForecast);
 		}
 	}
